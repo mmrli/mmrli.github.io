@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MR.LI — 个人主页</title>
+<meta name="description" content="mrli 的个人主页：开发者 · 开源爱好者。">
+<!--
+  ┌─────────────────────────────────────────────┐
+  │  单文件个人主页 · 部署到 GitHub Pages 即可     │
+  │  修改内容：搜索 "TODO" 替换成你自己的信息       │
+  └─────────────────────────────────────────────┘
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,900&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:      #F4EFE4;
+    --paper-deep: #ECE5D3;
+    --ink:        #191612;
+    --ink-soft:   #57503F;
+    --accent:     #D93A2B;
+    --line:       rgba(25,22,18,.22);
+    --line-strong:rgba(25,22,18,.85);
+    --serif: "Fraunces","Noto Serif SC",Georgia,serif;
+    --mono:  "IBM Plex Mono",ui-monospace,monospace;
+    --maxw: 1180px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:17px;
+    line-height:1.75;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:var(--paper)}
+
+  /* ———— 纸张颗粒质感 ———— */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:99;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+  }
+  /* ———— 页面四周细框 ———— */
+  .frame{position:fixed;inset:14px;border:1px solid var(--line);pointer-events:none;z-index:98}
+  @media(max-width:720px){.frame{inset:8px}}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+
+  /* ———— 顶部跑马灯 ———— */
+  .ticker{
+    border-bottom:1px solid var(--line-strong);
+    background:var(--ink);color:var(--paper);
+    overflow:hidden;white-space:nowrap;
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+    padding:9px 0;user-select:none;
+  }
+  .ticker-track{display:inline-block;animation:tick 28s linear infinite}
+  .ticker span{margin:0 1.8em}
+  .ticker em{font-style:normal;color:var(--accent)}
+  @keyframes tick{to{transform:translateX(-50%)}}
+
+  /* ———— 报头 masthead ———— */
+  .masthead{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    padding:18px 0 14px;border-bottom:1px solid var(--line-strong);
+    font-family:var(--mono);font-size:13px;
+  }
+  .masthead .brand{font-weight:500;letter-spacing:.08em;text-decoration:none;color:var(--ink)}
+  .masthead .brand b{color:var(--accent)}
+  .masthead nav{display:flex;gap:22px}
+  .masthead nav a{color:var(--ink-soft);text-decoration:none;transition:color .2s}
+  .masthead nav a:hover{color:var(--accent)}
+  .status{display:flex;align-items:center;gap:8px}
+  .status i{width:8px;height:8px;border-radius:50%;background:#3B8A4E;box-shadow:0 0 0 3px rgba(59,138,78,.18);animation:pulse 2s infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 6px rgba(59,138,78,.08)}}
+  @media(max-width:720px){
+    .masthead{flex-wrap:wrap}
+    .clock-wrap{display:none}
+  }
+
+  /* ———— 头版 hero ———— */
+  .hero{position:relative;padding:clamp(60px,11vh,120px) 0 clamp(46px,8vh,84px)}
+  .hero .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.3em;color:var(--accent);text-transform:uppercase}
+  .hero h1{
+    font-weight:900;
+    font-size:clamp(44px,9.5vw,118px);
+    line-height:1.04;letter-spacing:-.02em;
+    margin:18px 0 10px;
+  }
+  .hero h1 .latin{font-family:"Fraunces",var(--serif);font-weight:900}
+  .hero h1 .accent-dot{color:var(--accent)}
+  .hero .sub{
+    max-width:34em;font-size:clamp(17px,2vw,21px);color:var(--ink-soft);
+  }
+  .hero .sub strong{color:var(--ink);font-weight:600}
+  .hero-cta{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    font-family:var(--mono);font-size:13px;letter-spacing:.1em;
+    text-decoration:none;padding:13px 26px;border:1px solid var(--line-strong);
+    color:var(--ink);background:transparent;cursor:pointer;
+    transition:background .25s,color .25s,transform .15s;
+  }
+  .btn:hover{background:var(--ink);color:var(--paper)}
+  .btn:active{transform:scale(.97)}
+  .btn.solid{background:var(--ink);color:var(--paper)}
+  .btn.solid:hover{background:var(--accent);border-color:var(--accent)}
+
+  /* ———— 印章 ———— */
+  .seal{
+    position:absolute;top:clamp(46px,9vh,96px);right:clamp(8px,4vw,60px);
+    width:clamp(86px,11vw,128px);aspect-ratio:1;
+    border:3px solid var(--accent);border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--accent);font-weight:900;
+    font-size:clamp(38px,5vw,58px);
+    transform:rotate(7deg);
+    box-shadow:inset 0 0 0 2px var(--paper),inset 0 0 0 4px var(--accent);
+    opacity:.92;user-select:none;
+    animation:stamp .7s cubic-bezier(.2,1.6,.4,1) .8s backwards;
+  }
+  @keyframes stamp{from{transform:rotate(7deg) scale(2.4);opacity:0}}
+  @media(max-width:720px){.seal{top:12px;right:0}}
+
+  /* ———— 章节通用 ———— */
+  section{padding:clamp(52px,9vh,96px) 0;border-bottom:1px solid var(--line-strong)}
+  .sec-head{
+    display:flex;align-items:baseline;gap:18px;margin-bottom:clamp(28px,5vh,52px);
+  }
+  .sec-head .no{font-family:var(--mono);font-size:13px;color:var(--accent)}
+  .sec-head h2{
+    font-size:clamp(26px,4vw,44px);font-weight:900;letter-spacing:-.01em;
+  }
+  .sec-head .rule{flex:1;border-top:1px solid var(--line);transform:translateY(-6px)}
+
+  /* ———— 入场动画 ———— */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.visible{opacity:1;transform:none}
+  .hero .kicker,.hero h1,.hero .sub,.hero-cta{
+    animation:rise .9s cubic-bezier(.2,.8,.2,1) backwards;
+  }
+  .hero h1{animation-delay:.12s}
+  .hero .sub{animation-delay:.24s}
+  .hero-cta{animation-delay:.36s}
+  @keyframes rise{from{opacity:0;transform:translateY(34px)}}
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
+
+  /* ———— 关于 ———— */
+  .about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(28px,5vw,72px)}
+  .about-grid .lede{font-size:clamp(19px,2.2vw,25px);line-height:1.8}
+  .about-grid .lede em{font-style:normal;color:var(--accent);font-weight:600}
+  .facts{border-left:1px solid var(--line);padding-left:clamp(20px,3vw,40px);font-family:var(--mono);font-size:13.5px}
+  .facts dt{color:var(--ink-soft);letter-spacing:.16em;margin-top:20px;text-transform:uppercase}
+  .facts dt:first-child{margin-top:0}
+  .facts dd{margin-top:4px}
+  @media(max-width:820px){.about-grid{grid-template-columns:1fr}.facts{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:24px}}
+
+  /* ———— 项目 ———— */
+  .proj{
+    display:grid;grid-template-columns:86px 1fr auto;gap:clamp(14px,3vw,40px);
+    align-items:baseline;padding:26px 10px;
+    border-top:1px solid var(--line);
+    text-decoration:none;color:var(--ink);
+    transition:background .3s,color .3s,padding-left .3s;
+  }
+  .proj:last-of-type{border-bottom:1px solid var(--line)}
+  .proj .yr{font-family:var(--mono);font-size:13px;color:var(--ink-soft)}
+  .proj h3{font-size:clamp(19px,2.4vw,26px);font-weight:600}
+  .proj p{color:var(--ink-soft);font-size:15.5px;margin-top:4px;max-width:46em}
+  .proj .go{font-family:var(--mono);font-size:13px;white-space:nowrap;transition:transform .3s}
+  .proj:hover{background:var(--ink);color:var(--paper);padding-left:26px}
+  .proj:hover .yr,.proj:hover p{color:rgba(244,239,228,.65)}
+  .proj:hover .go{color:var(--accent);transform:translateX(8px)}
+  .more{display:inline-block;margin-top:26px;font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--ink-soft);text-decoration:none}
+  .more:hover{color:var(--accent)}
+  @media(max-width:720px){.proj{grid-template-columns:1fr auto}.proj .yr{display:none}}
+
+  /* ———— 技术栈 ———— */
+  .chips{display:flex;flex-wrap:wrap;gap:12px}
+  .chip{
+    font-family:var(--mono);font-size:13px;
+    border:1px solid var(--line-strong);padding:9px 18px;
+    transition:background .25s,color .25s,border-color .25s;
+    cursor:default;
+  }
+  .chip:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+
+  /* ———— 联系 ———— */
+  .contact-big{
+    font-size:clamp(30px,5.5vw,64px);font-weight:900;line-height:1.25;
+    letter-spacing:-.01em;
+  }
+  .contact-big a{color:var(--ink);text-decoration:none;box-shadow:inset 0 -0.14em var(--accent);transition:color .25s}
+  .contact-big a:hover{color:var(--accent)}
+  .contact-row{margin-top:40px;display:flex;gap:26px;flex-wrap:wrap;align-items:center}
+  .contact-row .link{
+    font-family:var(--mono);font-size:13.5px;color:var(--ink);text-decoration:none;
+    border-bottom:1px solid var(--line);padding-bottom:3px;transition:color .2s,border-color .2s;
+  }
+  .contact-row .link:hover{color:var(--accent);border-color:var(--accent)}
+  .copied{color:#3B8A4E!important;border-color:#3B8A4E!important}
+
+  /* ———— 页脚 ———— */
+  footer{
+    padding:34px 0 44px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);letter-spacing:.06em;
+  }
+  footer a{color:inherit;text-decoration:none}
+  footer a:hover{color:var(--accent)}
+  footer .up{cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="frame" aria-hidden="true"></div>
+
+<!-- 跑马灯 -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>HELLO, WORLD<em> ◆ </em>欢迎光临<em> ◆ </em>OPEN SOURCE<em> ◆ </em>咖啡驱动开发<em> ◆ </em>STAY CURIOUS<em> ◆ </em>代码即诗<em> ◆ </em></span>
+    <span>HELLO, WORLD<em> ◆ </em>欢迎光临<em> ◆ </em>OPEN SOURCE<em> ◆ </em>咖啡驱动开发<em> ◆ </em>STAY CURIOUS<em> ◆ </em>代码即诗<em> ◆ </em></span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- 报头 -->
+  <header class="masthead">
+    <a class="brand" href="#top"><b>MR.LI</b> / 个人主页</a>
+    <nav>
+      <a href="#about">关于</a>
+      <a href="#work">项目</a>
+      <a href="#stack">技术栈</a>
+      <a href="#contact">联系</a>
+    </nav>
+    <div class="clock-wrap status">
+      <i></i><span id="clock">--:--:--</span><span>北京时间</span>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- 头版 -->
+    <section class="hero">
+      <div class="seal" aria-hidden="true">李</div>
+      <p class="kicker">EST. 2026 — GITHUB PAGES</p><!-- TODO: 换成你的起步年份 -->
+      <h1>你好，<br>我是<span class="latin"> Mr.Li</span><span class="accent-dot">.</span></h1>
+      <p class="sub">
+        一名喜欢折腾的<strong>开发者</strong>。写代码、玩开源、偶尔记录生活。
+        这里是我的数字角落——不完美，但足够真诚。
+      </p><!-- TODO: 换成你的自我介绍 -->
+      <div class="hero-cta">
+        <a class="btn solid" href="https://github.com/mrli" target="_blank" rel="noopener">GITHUB ↗</a><!-- TODO: 换成你的 GitHub 用户名 -->
+        <a class="btn" href="#work">看看项目 ↓</a>
+      </div>
+    </section>
+
+    <!-- 关于 -->
+    <section id="about">
+      <div class="sec-head reveal">
+        <span class="no">01</span><h2>关于</h2><span class="rule"></span>
+      </div>
+      <div class="about-grid reveal">
+        <p class="lede">
+          我相信<em>简单</em>是一种美德，<em>好奇</em>是最好的老师。
+          白天写代码，晚上读文档，周末修自己的 side project（通常是无限循环）。
+          这个页面没有花哨的框架——只有一份 HTML、一些 CSS 和一点点固执。
+        </p><!-- TODO: 换成你的介绍 -->
+        <dl class="facts">
+          <dt>Location</dt><dd>China · UTC+8</dd><!-- TODO -->
+          <dt>Focus</dt><dd>Web · Open Source</dd><!-- TODO -->
+          <dt>Motto</dt><dd>Stay hungry, stay foolish.</dd>
+          <dt>现在</dt><dd>开放合作与交流</dd><!-- TODO -->
+        </dl>
+      </div>
+    </section>
+
+    <!-- 项目 -->
+    <section id="work">
+      <div class="sec-head reveal">
+        <span class="no">02</span><h2>项目</h2><span class="rule"></span>
+      </div>
+      <!-- TODO: 把下面的项目换成你自己的仓库 -->
+      <a class="proj reveal" href="https://github.com/mrli" target="_blank" rel="noopener">
+        <span class="yr">2026</span>
+        <div><h3>project-one</h3><p>第一个项目的一句话介绍：它解决了什么问题，用了什么技术。</p></div>
+        <span class="go">VIEW ↗</span>
+      </a>
+      <a class="proj reveal" href="https://github.com/mrli" target="_blank" rel="noopener">
+        <span class="yr">2026</span>
+        <div><h3>project-two</h3><p>第二个项目的一句话介绍：它解决了什么问题，用了什么技术。</p></div>
+        <span class="go">VIEW ↗</span>
+      </a>
+      <a class="proj reveal" href="https://github.com/mrli" target="_blank" rel="noopener">
+        <span class="yr">2025</span>
+        <div><h3>project-three</h3><p>第三个项目的一句话介绍：它解决了什么问题，用了什么技术。</p></div>
+        <span class="go">VIEW ↗</span>
+      </a>
+      <a class="more reveal" href="https://github.com/mrli?tab=repositories" target="_blank" rel="noopener">→ 在 GitHub 查看全部仓库</a>
+    </section>
+
+    <!-- 技术栈 -->
+    <section id="stack">
+      <div class="sec-head reveal">
+        <span class="no">03</span><h2>技术栈</h2><span class="rule"></span>
+      </div>
+      <!-- TODO: 换成你会的技术 -->
+      <div class="chips reveal">
+        <span class="chip">JavaScript</span>
+        <span class="chip">TypeScript</span>
+        <span class="chip">Python</span>
+        <span class="chip">HTML / CSS</span>
+        <span class="chip">Node.js</span>
+        <span class="chip">Git</span>
+        <span class="chip">Linux</span>
+        <span class="chip">Markdown</span>
+      </div>
+    </section>
+
+    <!-- 联系 -->
+    <section id="contact">
+      <div class="sec-head reveal">
+        <span class="no">04</span><h2>联系</h2><span class="rule"></span>
+      </div>
+      <p class="contact-big reveal">
+        有想法？<a href="mailto:me@example.com">给我写封邮件</a>。
+      </p><!-- TODO: 换成你的邮箱 -->
+      <div class="contact-row reveal">
+        <button class="link" id="copy-mail" type="button">⧉ 复制邮箱地址</button>
+        <a class="link" href="https://github.com/mrli" target="_blank" rel="noopener">GitHub ↗</a><!-- TODO -->
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>© 2026 mrli · 用一份 HTML 与咖啡构建</span>
+    <span><a href="https://github.com/mrli.github.io" target="_blank" rel="noopener">查看本站源码 ↗</a></span>
+    <span class="up" id="to-top">回到顶部 ↑</span>
+  </footer>
+
+</div>
+
+<script>
+  // 本地时钟
+  const clock = document.getElementById('clock');
+  const tick = () => {
+    const d = new Date();
+    clock.textContent = d.toLocaleTimeString('zh-CN', {hour12:false, timeZone:'Asia/Shanghai'});
+  };
+  tick(); setInterval(tick, 1000);
+
+  // 滚动入场
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // 复制邮箱
+  const btn = document.getElementById('copy-mail');
+  btn.addEventListener('click', async () => {
+    const mail = 'me@example.com'; // TODO: 与上面的邮箱保持一致
+    try { await navigator.clipboard.writeText(mail); }
+    catch { const t = document.createElement('textarea'); t.value = mail; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+    const old = btn.textContent;
+    btn.textContent = '✓ 已复制';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = old; btn.classList.remove('copied'); }, 1600);
+  });
+
+  // 回到顶部
+  document.getElementById('to-top').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+</script>
+</body>
+</html>
